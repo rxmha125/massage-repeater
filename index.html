@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Repeater</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #message {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+            justify-content: center;
+        }
+
+        .input-group input, button {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            flex: 1 1 200px; /* Ensures inputs fit within the frame */
+        }
+
+        button {
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .generate-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+
+        .copy-btn {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+        }
+
+        .clear-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+        }
+
+        .dark-mode-btn {
+            background-color: #333;
+            color: white;
+            border: none;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .dark-mode {
+            background-color: #333;
+            color: white;
+        }
+
+        .dark-mode #message {
+            background-color: #444;
+            border-color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 style="color: gray">Message Repeater</h1>
+    <div class="input-group">
+        <input type="text" id="customMessage" placeholder="Enter your message here" />
+        <input type="number" id="repeatCount" placeholder="Number of times" min="1" max="1000" />
+    </div>
+    <button class="generate-btn" onclick="generateMessages()">Generate Messages</button>
+    <button class="copy-btn" onclick="copyText()">Copy All Messages</button>
+    <button class="clear-btn" onclick="clearMessages()">Clear Messages</button>
+    <button class="dark-mode-btn" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+</div>
+
+<div id="message"></div>
+
+<script>
+    const messageContainer = document.getElementById("message");
+    let fullText = '';
+
+    // Function to generate messages based on user input
+    function generateMessages() {
+        const customMessage = document.getElementById("customMessage").value;
+        const repeatCount = parseInt(document.getElementById("repeatCount").value);
+
+        // Clear existing messages
+        messageContainer.innerHTML = '';
+        fullText = '';
+
+        // Validate inputs
+        if (!customMessage || isNaN(repeatCount) || repeatCount <= 0) {
+            alert("Please enter a valid message and a positive number.");
+            return;
+        }
+
+        // Generate messages
+        for (let i = 1; i <= repeatCount; i++) {
+            const message = `${i} - ${customMessage}<br>`;
+            messageContainer.innerHTML += message;
+            fullText += `${i} - ${customMessage}\n`;
+        }
+    }
+
+    // Function to copy all messages to clipboard
+    function copyText() {
+        const tempTextArea = document.createElement("textarea");
+        tempTextArea.value = fullText;
+        document.body.appendChild(tempTextArea);
+        tempTextArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempTextArea);
+        alert("All messages copied to clipboard!");
+    }
+
+    // Function to clear all messages
+    function clearMessages() {
+        messageContainer.innerHTML = '';
+        fullText = '';
+        document.getElementById("customMessage").value = '';
+        document.getElementById("repeatCount").value = '';
+    }
+
+    // Function to toggle dark mode
+    function toggleDarkMode() {
+        document.body.classList.toggle("dark-mode");
+    }
+</script>
+
+</body>
+</html>
